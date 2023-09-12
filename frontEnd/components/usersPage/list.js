@@ -29,7 +29,8 @@ function User() {
 
   const getAllData = async (value) => {
     setLoading(true);
-    return getAllUsers(page, recordsPerPage, value)
+    return getAllUsers(page, recordsPerPage, value, sorting.column,
+      sorting.order)
       .then((res) => {
         setLoading(false);
         const totalPages1 = Math.ceil(res.data.total / recordsPerPage);
@@ -56,28 +57,6 @@ function User() {
         .catch((error) => {
           console.log("Error", error);
         });
-    }
-  };
-
-  //Sorting
-
-  const sortTable = async (newSorting) => {
-    setSorting(newSorting);
-    setLoading(true);
-    try {
-      const res = await getSortData(
-        page,
-        recordsPerPage,
-        sorting.column,
-        sorting.order
-      );
-      const totalPages1 = Math.ceil(res.data.total / recordsPerPage);
-      setData(res.data.users);
-      setTotalPages(totalPages1);
-      setLoading(false);
-      setTotalReacords(res.data.total);
-    } catch (error) {
-      console.log("Error", error);
     }
   };
 
@@ -109,7 +88,7 @@ function User() {
 
   useEffect(() => {
     getAllData(input);
-  }, [recordsPerPage, page, input]);
+  }, [recordsPerPage, page, input, sorting]);
 
   return (
     <div className="container-xl">
@@ -179,11 +158,10 @@ function User() {
             <Table
               data={data}
               tableHeader={tableHeader}
-              isAscSorting={isAscSorting}
-              isDescSorting={isDescSorting}
               deleteItem={(e, _id) => deleteItem(e, _id)}
-              sortTable={(e) => sortTable(e)}
+              setPage={setPage}
               sorting={sorting}
+              setSorting={setSorting}
               futureSortingOrder={futureSortingOrder}
             />
             <Pagiantion

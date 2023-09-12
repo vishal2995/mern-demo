@@ -32,10 +32,10 @@ export const getSortData = (page, limit, filed, order) => {
   });
 };
 
-export const getAllUsers = (page, limit, value) => {
+export const getAllUsers = (page, limit, value,filed, order) => {
   return axios({
     method: "GET",
-    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/users?page=${page}&limit=${limit}&name=${value}`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/users?page=${page}&limit=${limit}&name=${value}&sort=${filed}&orderby=${order}`,
   });
 };
 

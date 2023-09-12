@@ -6,13 +6,16 @@ import Cookies from "js-cookie";
 function Table({
   data,
   tableHeader,
-  isAscSorting,
-  isDescSorting,
   deleteItem,
-  sortTable,
   sorting,
+  setSorting,
   futureSortingOrder,
+  setPage
 }) {
+  const sortTable = (newSorting) => {
+    setSorting(newSorting);
+    setPage(1);
+  };
   return (
     <div className="row dt-row px-lg-5 mb-lg-4">
       <div className="col-sm-12">
@@ -28,15 +31,14 @@ function Table({
                 return (
                   <th
                     key={index}
-                    className={`sorting ${
-                      sorting.column === item.value && isAscSorting
-                        ? "sorting_asc"
-                        : "sorting" &&
-                          sorting.column === item.value &&
-                          isDescSorting
+                    className={`sorting ${sorting.column === item.value && sorting.order === "asc"
+                      ? "sorting_asc"
+                      : "sorting" &&
+                        sorting.column === item.value
+                        && sorting.order === "desc"
                         ? "sorting_desc"
                         : "sorting"
-                    } `}
+                      } `}
                     tabIndex={0}
                     aria-controls="students_table"
                     rowSpan={1}
@@ -78,7 +80,7 @@ function Table({
                           className="mx-2 edit-btn"
                         />
                       </Link>
-                      {item && item._id !== Cookies.get("loginId") ? (
+                      {item && item._id !== Cookies.get("loginId") && item.email !== "vishal@yopmail.com" ? (
                         <Link
                           href="/users"
                           className="delete"
